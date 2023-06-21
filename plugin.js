@@ -1,46 +1,3 @@
-/**
- * made by: Adi Martha (https://github.com/billyinferno/tdarr-video-compress-plugin)
- *
- * Tdarr Plugins for compressing video that will be used for Jellyfin/PleX
- * configurable parameter are:
- * - max video width
- *   this is will be used as the maximum width of the video, if the video exceed the maximum width, it will try to
- *   adjust based on the aspect ratio.
- *
- * - auto crop
- *   this is to auto crop the black bar that usually put on top and bottom of video. As this is based on the
- *   Handbrake implementation, there are probably slight crop on the actual video.
- *
- * - use CRF
- *   if this is set as true then it will use CRF Quality as the video bitrate input.
- *   if this is set as false it will using specific VBR (eg. 2700kbps) and will be run as two-pass
- *
- * - CRF Quality
- *   CRF quality that you want to use for the video.
- *
- * - Video Bitrate
- *   specific video bitrate that being used if use CRF is false.
- *
- * - Audio Bitrate
- *   All audio will be always converted to AAC 2.0 160kbps (to ensure compatibility).
- *   In case audio bitrate is lower than that it will follow the current bitrate with only convert it into AAC 2.0.
- *
- * - Extract Subs
- *   Extract all the subs present on the video.
- *
- * - Encoder Preset
- *   Encoder preset provided by Handbrake
- *
- * - Encoder Tune
- *   Encoder tune provided by Handbrake
- *
- * - Encoder Level
- *   Encoder level provided by Handbrake
- *
- * - Encoder Profile
- *   Encoder profile provided by Handbrake
- */
-
     var fs = require('fs');
     var path = require('path');
     if (fs.existsSync(path.join(process.cwd() , '/npm'))) {
@@ -498,8 +455,8 @@
             return response;
         } else {
             // now let's try to generate Handbrake CLI command to convert this
-            // 1. set the preset that we will used, in this case we will used Vimeo/Youtube 1080p
-            handBrakeCLI += '-Z "Vimeo YouTube HQ 1080p60" ';
+            // 1. set the preset that we will used, in this case we will used Creator 1080p60 as per Handbrake CLI 1.6.1
+            handBrakeCLI += '-Z "Creator 1080p60" ';
             // 2. set the video configuration
             if(useCrf) {
                 handBrakeCLI += '--encoder "x264" --encoder-preset "'+encoderPreset+'" --encoder-tune "'+encoderTune+'" --encopts "keyint='+frameKeyInt+':min-keyint='+frameMinKeyInt+':ref='+frameRef+':bframes=2:b-pyramid=none" --encoder-level "'+encoderLevel+'" --encoder-profile "'+encoderProfile+'" --quality '+CRFQuality+' --vfr '
